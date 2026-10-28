@@ -1,0 +1,22 @@
+# Original dependencies
+fastapi
+uvicorn
+requests
+python-dotenv
+groq
+langgraph
+langchain-groq
+langchain-google-genai
+langchain-core
+openai
+google-generativeai
+
+# Advanced Code Analysis Tools (for /analyze-advanced endpoint)
+pylint>=3.0.0          # Comprehensive code quality checker
+radon>=6.0.0           # Cyclomatic complexity analyzer
+bandit>=1.7.0          # Security vulnerability scanner
+flake8>=7.0.0          # PEP8 style checker
+mypy>=1.8.0            # Static type checker (optional)
+pytest>=7.0.0          # Test runner (coverage için)
+pytest-cov>=4.0.0      # Test coverage ölçümü
+coverage>=7.0.0        # Coverage.py

@@ -1,0 +1,52 @@
+# Repository-wide .gitignore
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+.vscode/*.code-workspace
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project Logs and Reports
+agentic_nodes_loop/logs/*.csv
+agentic_nodes_loop/logs/*.xlsx
+agentic_nodes_loop/logs/*.log
+!agentic_nodes_loop/logs/.gitkeep
+
+# Root/Generic Logs
+*.log
+workflow_log.csv
+iteration_log.csv
+
+# Machine Learning
+wandb/

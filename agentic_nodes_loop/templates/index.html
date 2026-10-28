@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAVELSAN - Hybrid Code Generator</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <!-- PrismJS Theme -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <!-- App Logic (Loaded early with defer to ensure copyCode is defined) -->
+    <script src="/static/js/script_v5.js?v=7.0.0" defer></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css?v=7.0.0">
+
+    <style>
+        /* ---- İkili Sistem (Matrix) Arka Plan Animasyonları — Çok Yönlü ---- */
+        .bg-plane {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            white-space: nowrap;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--neon-cyan);
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        /* ✈️ 1 — Sol → Sağ, orta bant, yavaş dalga */
+        .bg-plane-1 { font-size: 28px; animation: planeFly1 22s ease-in-out infinite 0s; }
+        @keyframes planeFly1 {
+            0%   { left:-80px; top:55%; opacity:0;    transform:rotate(-3deg); }
+            6%   { left:4%;    top:52%; opacity:0.5;  transform:rotate(-5deg); }
+            22%  { left:23%;   top:44%; transform:rotate(-2deg); }
+            38%  { left:40%;   top:52%; transform:rotate(-5deg); }
+            54%  { left:57%;   top:43%; transform:rotate(-2deg); }
+            70%  { left:73%;   top:51%; transform:rotate(-5deg); }
+            85%  { left:87%;   top:43%; transform:rotate(-2deg); }
+            94%  { left:97%;   top:50%; opacity:0.5;  transform:rotate(-4deg); }
+            100% { left:112%;  top:48%; opacity:0;    transform:rotate(-3deg); }
+        }
+
+        /* ✈️ 2 — Sağ → Sol (ters), üst bant, orta hız */
+        .bg-plane-2 { font-size: 22px; animation: planeFly2 19s ease-in-out infinite 5s; }
+        @keyframes planeFly2 {
+            0%   { left:110%;  top:18%; opacity:0;    transform:scaleX(-1) rotate(-3deg); }
+            6%   { left:95%;   top:22%; opacity:0.45; transform:scaleX(-1) rotate(-5deg); }
+            22%  { left:76%;   top:13%; transform:scaleX(-1) rotate(-2deg); }
+            38%  { left:60%;   top:22%; transform:scaleX(-1) rotate(-5deg); }
+            54%  { left:44%;   top:12%; transform:scaleX(-1) rotate(-2deg); }
+            70%  { left:28%;   top:21%; transform:scaleX(-1) rotate(-5deg); }
+            85%  { left:13%;   top:12%; transform:scaleX(-1) rotate(-2deg); }
+            94%  { left:3%;    top:19%; opacity:0.45; transform:scaleX(-1) rotate(-4deg); }
+            100% { left:-60px; top:17%; opacity:0;    transform:scaleX(-1) rotate(-3deg); }
+        }
+
+        /* ✈️ 3 — Affağı → Yukarı, sol taraf, yavaş */
+        .bg-plane-3 { font-size: 20px; animation: planeFly3 21s ease-in-out infinite 9s; }
+        @keyframes planeFly3 {
+            0%   { left:18%;  top:112%; opacity:0;    transform:rotate(-90deg); }
+            6%   { left:20%;  top:95%;  opacity:0.45; transform:rotate(-88deg); }
+            22%  { left:15%;  top:74%;  transform:rotate(-92deg); }
+            40%  { left:21%;  top:53%;  transform:rotate(-87deg); }
+            58%  { left:14%;  top:33%;  transform:rotate(-93deg); }
+            76%  { left:20%;  top:14%;  transform:rotate(-88deg); }
+            90%  { left:17%;  top:3%;   opacity:0.45; transform:rotate(-91deg); }
+            100% { left:19%;  top:-12%; opacity:0;    transform:rotate(-90deg); }
+        }
+
+        /* ✈️ 4 — Yukarı → Affağı, sağ taraf */
+        .bg-plane-4 { font-size: 19px; animation: planeFly4 26s ease-in-out infinite 15s; }
+        @keyframes planeFly4 {
+            0%   { left:74%;  top:-12%; opacity:0;    transform:rotate(90deg); }
+            6%   { left:72%;  top:4%;   opacity:0.42; transform:rotate(88deg); }
+            22%  { left:77%;  top:25%;  transform:rotate(92deg); }
+            40%  { left:71%;  top:45%;  transform:rotate(87deg); }
+            58%  { left:76%;  top:63%;  transform:rotate(93deg); }
+            76%  { left:72%;  top:80%;  transform:rotate(88deg); }
+            90%  { left:75%;  top:95%;  opacity:0.42; transform:rotate(91deg); }
+            100% { left:74%;  top:112%; opacity:0;    transform:rotate(90deg); }
+        }
+
+        /* ✈️ 5 — Sağ → Sol (ters), alt bant, hızlı */
+        .bg-plane-5 { font-size: 18px; animation: planeFly5 14s ease-in-out infinite 12s; }
+        @keyframes planeFly5 {
+            0%   { left:110%;  top:72%; opacity:0;    transform:scaleX(-1) rotate(-4deg); }
+            7%   { left:93%;   top:68%; opacity:0.4;  transform:scaleX(-1) rotate(-6deg); }
+            26%  { left:71%;   top:76%; transform:scaleX(-1) rotate(-2deg); }
+            46%  { left:50%;   top:67%; transform:scaleX(-1) rotate(-6deg); }
+            66%  { left:28%;   top:76%; transform:scaleX(-1) rotate(-2deg); }
+            86%  { left:8%;    top:67%; opacity:0.4;  transform:scaleX(-1) rotate(-5deg); }
+            100% { left:-60px; top:72%; opacity:0;    transform:scaleX(-1) rotate(-4deg); }
+        }
+
+        /* ✈️ 6 — Sol → Sağ, çok hızlı, orta-alt */
+        .bg-plane-6 { font-size: 16px; animation: planeFly6 10s ease-in-out infinite 2s; }
+        @keyframes planeFly6 {
+            0%   { left:-40px; top:80%; opacity:0;    transform:rotate(-4deg); }
+            8%   { left:4%;    top:76%; opacity:0.38; transform:rotate(-6deg); }
+            27%  { left:26%;   top:83%; transform:rotate(-1deg); }
+            47%  { left:48%;   top:75%; transform:rotate(-6deg); }
+            67%  { left:68%;   top:83%; transform:rotate(-1deg); }
+            87%  { left:88%;   top:75%; opacity:0.38; transform:rotate(-5deg); }
+            100% { left:112%;  top:80%; opacity:0;    transform:rotate(-4deg); }
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <header class="app-header">
+        <div class="container">
+            <div class="header-left">
+                <!--HAVELSAN LOGO -->
+                <img src="/static/img/havelsan-logo.png" alt="HAVELSAN" style="height: 80px; width: auto; object-fit: contain; filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.3)); margin-left: 5px;">
+            </div>
+
+            <div class="header-center">
+            </div>
+
+            <div class="header-right">
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    3 Model Aktif
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title"> <span class="gradient-text-cyan">HAVELSAN HYBRID CODE GENERATOR</span></h1>
+        </div>
+
+        <!-- Input Section -->
+        <section class="input-section">
+            <div class="input-wrapper">
+                <textarea id="prompt" placeholder="Promtunuzu buraya yazınız..."></textarea>
+
+                <div class="input-footer">
+                    <div class="input-actions-left">
+                        <span class="shortcut-hint">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z">
+                                </path>
+                            </svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 10 4 15 9 20"></polyline>
+                                <path d="M20 4v7a4 4 0 0 1-4 4H4"></path>
+                            </svg>
+                            hizli uretim
+                        </span>
+                    </div>
+                    <div class="input-actions-right">
+                        <button id="btn-generate" onclick="generate()" class="btn btn-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z">
+                                </path>
+                                <path d="M5 3v4"></path>
+                                <path d="M19 17v4"></path>
+                                <path d="M3 5h4"></path>
+                                <path d="M17 19h4"></path>
+                            </svg>
+                            <span>Kod Uret</span>
+                            <div id="loader" class="loader"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Round 1: 3 Model Results -->
+        <section id="round1-section" class="round1-section" style="display: none;">
+            <h2>Model Competition Results</h2>
+
+            <div class="results-grid">
+                <div class="model-card">
+                    <div class="model-header" id="header-model-1">Model 1</div>
+                    <div class="code-container">
+                        <button class="copy-btn" onclick="copyCode('code-model-1')">Copy</button>
+                        <pre><code id="code-model-1" class="language-python">Generating code...</code></pre>
+                    </div>
+                    <div class="score-panel" id="score-model-1"></div>
+                </div>
+
+                <div class="model-card">
+                    <div class="model-header" id="header-model-2">Model 2</div>
+                    <div class="code-container">
+                        <button class="copy-btn" onclick="copyCode('code-model-2')">Copy</button>
+                        <pre><code id="code-model-2" class="language-python">Generating code...</code></pre>
+                    </div>
+                    <div class="score-panel" id="score-model-2"></div>
+                </div>
+
+                <div class="model-card">
+                    <div class="model-header" id="header-model-3">Model 3</div>
+                    <div class="code-container">
+                        <button class="copy-btn" onclick="copyCode('code-model-3')">Copy</button>
+                        <pre><code id="code-model-3" class="language-python">Generating code...</code></pre>
+                    </div>
+                    <div class="score-panel" id="score-model-3"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Winner + Feedback Section -->
+        <section id="winner-section" class="winner-section" style="display: none;">
+            <div id="winner-info"></div>
+
+            <!-- Feedback Iterations (optional) -->
+            <div id="feedback-section" style="display: none;">
+                <h3>Feedback Improvement Process</h3>
+                <div id="feedback-iterations"></div>
+            </div>
+
+            <!-- Final Code -->
+            <div class="final-code-section">
+                <h3>Final Code</h3>
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode('final-code')">Copy</button>
+                    <pre><code id="final-code" class="language-python">Final code will appear here...</code></pre>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PrismJS Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+
+</body>
+
+</html>
